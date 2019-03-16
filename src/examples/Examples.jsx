@@ -1,20 +1,26 @@
 import React from 'react';
 
+import { AsyncSelect } from './AsyncSelect';
 import { SimpleVirtualizedSelect } from './SimpleVirtualizedSelect';
 import { SelectWithCustomOptionRenderer } from './SelectWithCustomOptionRenderer';
 
 export class Examples extends React.PureComponent {
   render() {
     return (
-      <>
-        <div className="simple-select">
+      <ul style={{ listStyleType: 'none' }}>
+        <li className="simple-select">
+          <h3>Simple Virtualized Select</h3>
           <SimpleVirtualizedSelect />
-        </div>
-        <br />
-        <div className="select-option-renderer">
+        </li>
+        <li className="select-option-renderer">
+          <h3>Custom Option Renderer</h3>
           <SelectWithCustomOptionRenderer />
-        </div>
-      </>
+        </li>
+        <li className="select-option-renderer">
+          <h3>Async Select</h3>
+          <AsyncSelect />
+        </li>
+      </ul>
     )
   }
 }

@@ -91,6 +91,7 @@ class VirtualizedSelect extends React.Component {
   }
 
   render() {
+    const Select = this._getSelectComponent();
     return (
       <Select
         { ...this.props }
@@ -102,24 +103,45 @@ class VirtualizedSelect extends React.Component {
     );
   }
 
-  _onSelectChange(selectedOption) {
-    const { value, label } = selectedOption;
+  _onSelectChange(selectedOption, details) {
+    const { action } = details;
+    let selectedValue;
+
+    if (action === 'clear') {
+      selectedValue = null;
+    }
+
+    if (selectedOption){
+      const { value, label } = selectedOption;
+      selectedValue = this.props.options.find(item => item.value === value)
+    }
+
     this.setState({
-      selectedValue: this.props.options.find(item => item.value === value)
+      selectedValue
     })
+    
     if (this.props.onChange) {
-      this.props.onChange({ label, value });
+      this.props.onChange(selectedOption);
     }
   }
 
   _setSelectRef(ref) {
     this._selectRef = ref
   }
+
+  _getSelectComponent() {
+    if (this.props.async) {
+      return Select.async
+    } else {
+      return Select
+    }
+  }
 }
 
 VirtualizedSelect.defaultProps = {
   maxHeight: 200,
   optionHeight: 35,
+  async: false
 }
 
 export { VirtualizedSelect }
