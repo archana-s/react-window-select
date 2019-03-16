@@ -7,9 +7,13 @@ export class Examples extends React.PureComponent {
   render() {
     return (
       <>
-        <SimpleVirtualizedSelect />
+        <div className="simple-select">
+          <SimpleVirtualizedSelect />
+        </div>
         <br />
-        <SelectWithCustomOptionRenderer />
+        <div className="select-option-renderer">
+          <SelectWithCustomOptionRenderer />
+        </div>
       </>
     )
   }

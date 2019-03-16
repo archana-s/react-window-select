@@ -23,15 +23,14 @@ class MenuList extends React.PureComponent {
     const childrenArray =  Array.from(children);
 
     options = childrenArray.map((child, index) => ({
-        label: child.props.label,
-        value: child.props.value, 
-        isDisabled: child.props.isDisabled,
-        className: this._getClassNamesForOption(index, children),
-        selectOption: this.props.selectOption,
-        innerRef: child.props.innerRef,
-        onMouseOver: child.props.innerProps.onMouseOver
-      })
-    )
+      label: child.props.label,
+      value: child.props.value, 
+      isDisabled: child.props.isDisabled,
+      className: this._getClassNamesForOption(index, children),
+      selectOption: this.props.selectOption,
+      innerRef: child.props.innerRef,
+      onMouseOver: child.props.innerProps.onMouseOver
+    }))
 
     return (
       <List
