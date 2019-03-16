@@ -8,24 +8,38 @@ class MenuList extends React.PureComponent {
   constructor(props) {
     super(props);
     this._optionRenderer = this._optionRenderer.bind(this);
+    this._setListRef = this._setListRef.bind(this);
+    this.focusedOptionIndex = -1;
+  }
+
+  componentDidUpdate() {
+    /* To support keyboard press on the menu list. As the user keeps pressing down, the focusedIndex
+       value changes and so should the scroll position on the fixed list. 
+    */
+    if (this.focusedOptionIndex > -1 && this._listRef) {
+      this._listRef.scrollToItem(this.focusedOptionIndex);
+      this.focusedOptionIndex = -1;
+    }
   }
   
   render() {
     let { children, 
       options, 
-      selectProps: { maxHeight, optionHeight, width, value: selectedValue, optionRenderer }
+      selectProps: { maxHeight, optionHeight, width, value: selectedValue, optionRenderer },
     } = this.props
     optionRenderer = optionRenderer || this._optionRenderer
 
-    const indexOfSelectedOption = selectedValue ? options.findIndex((option) => selectedValue.value === option.value) : 0;
-    const initialScrollOffset = (indexOfSelectedOption > -1 ? indexOfSelectedOption : 0) * optionHeight;
+    const childrenArray = Array.from(children);
+    this.focusedOptionIndex = childrenArray.findIndex(child => child.props.isFocused); 
 
-    const childrenArray =  Array.from(children);
+    const selectedOptionIndex =  options.findIndex((option) => selectedValue.value === option.value);
+    const initialScrollOffset = (selectedOptionIndex > -1 ? selectedOptionIndex : 0) * optionHeight;
 
     options = childrenArray.map((child, index) => ({
       label: child.props.label,
       value: child.props.value, 
       isDisabled: child.props.isDisabled,
+      isFocused: child.props.isFocused,
       className: this._getClassNamesForOption(index, children),
       selectOption: this.props.selectOption,
       innerRef: child.props.innerRef,
@@ -40,10 +54,15 @@ class MenuList extends React.PureComponent {
         width={width}
         itemData={options}
         initialScrollOffset={initialScrollOffset}
+        ref={this._setListRef}
       >
         {optionRenderer}
       </List>
     )
+  }
+
+  _setListRef(ref) {
+    this._listRef = ref;
   }
 
   _getClassNamesForOption(index, children) {
@@ -59,7 +78,7 @@ class MenuList extends React.PureComponent {
     const events = options[index].isDisabled ? {} :
       {
         onClick: () => options[index].selectOption(options[index]),
-        onMouseOver: options[index].onMouseOver
+        onMouseOver: options[index].onMouseOver,
       }
 
     return (
@@ -88,6 +107,12 @@ class VirtualizedSelect extends React.Component {
     }
     this._setSelectRef = this._setSelectRef.bind(this)
     this._onSelectChange = this._onSelectChange.bind(this)
+  }
+
+  focus() {
+    if (this._selectRef) {
+      return this._selectRef.focus()
+    }
   }
 
   render() {

@@ -4,7 +4,7 @@ let browser, page;
 
 beforeAll(async () => {
   browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
   });
   page = await browser.newPage();
   await page.goto('http://localhost:8080');
@@ -37,6 +37,7 @@ describe('Simple select is all perfect', () => {
     await page.keyboard.press('Enter');
 
     const selectContents = await page.$eval(".simple-select", el => el.innerHTML);
+    console.log(selectContents);
     const hasNewSelectedElement = selectContents.indexOf('Item169') > -1;
     expect(hasNewSelectedElement).toBe(true);
   });

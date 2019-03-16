@@ -25,7 +25,6 @@ export class SimpleVirtualizedSelect extends React.PureComponent {
   }
 
   _onChange(option) {
-    debugger;
     // do something with it.
   }
 }
