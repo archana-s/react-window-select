@@ -37,8 +37,27 @@ describe('Simple select is all perfect', () => {
     await page.keyboard.press('Enter');
 
     const selectContents = await page.$eval(".simple-select", el => el.innerHTML);
-    console.log(selectContents);
     const hasNewSelectedElement = selectContents.indexOf('Item169') > -1;
     expect(hasNewSelectedElement).toBe(true);
+  });
+
+  test('Deleting the chosen value should reset scroll position and show placeholder', async () => {
+    const clearElementInSelect = await page.$eval(".simple-select > div > div > div:nth-child(2)", el => el.innerHTML);
+    
+    const classNameOnClearButton = /.*?class=\"(css-[^\s]*)?\"/.exec(clearElementInSelect);
+    expect(!!(classNameOnClearButton && classNameOnClearButton.length)).toBe(true);
+
+    if (classNameOnClearButton && classNameOnClearButton.length > 1) {
+      const className = classNameOnClearButton[1];
+      await page.click(`.${className}`);
+      const selectContents = await page.$eval('.simple-select', el => el.innerHTML);
+      expect(selectContents.indexOf('Select...') > -1).toBe(true);
+
+      await page.click('.simple-select'); 
+      const options = await page.$eval(".VirtualizedSelectOption", el => el.innerHTML);
+
+      const hasTheFirstElement = options.indexOf('Item0') > -1;
+      expect(hasTheFirstElement).toBe(true);
+    }
   });
 });

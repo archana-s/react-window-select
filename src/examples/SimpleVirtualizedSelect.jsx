@@ -12,7 +12,14 @@ export class SimpleVirtualizedSelect extends React.PureComponent {
       .map((item, index) => ({
         label: `${item.label}${index}`,
         value: `${item.label}${index}`
-      }))
+      }));
+
+    
+    const ClearIndicatorStyles = (base, state) => ({
+      ...base,
+      cursor: 'pointer',
+      color: state.isFocused ? 'blue' : 'red',
+    });
 
     return (
       <VirtualizedSelect
@@ -20,6 +27,7 @@ export class SimpleVirtualizedSelect extends React.PureComponent {
         value={{ value: 'Item167', label: 'Item167' }}
         onChange={this._onChange}
         isClearable={true}
+        styles={{ clearIndicator: ClearIndicatorStyles }}
       />
     )
   }

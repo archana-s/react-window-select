@@ -32,7 +32,8 @@ class MenuList extends React.PureComponent {
     const childrenArray = Array.from(children);
     this.focusedOptionIndex = childrenArray.findIndex(child => child.props.isFocused); 
 
-    const selectedOptionIndex =  options.findIndex((option) => selectedValue.value === option.value);
+    const selectedOptionIndex =  selectedValue ? 
+      options.findIndex((option) => selectedValue.value === option.value) : 0;
     const initialScrollOffset = (selectedOptionIndex > -1 ? selectedOptionIndex : 0) * optionHeight;
 
     options = childrenArray.map((child, index) => ({
@@ -67,10 +68,9 @@ class MenuList extends React.PureComponent {
 
   _getClassNamesForOption(index, children) {
     return `VirtualizedSelectOption 
-        ${children[index].props.isFocused ? 'VirtualizedSelectFocusedOption' : ''}
-        ${children[index].props.isDisabled ? 'VirtualizedSelectDisabledOption' : ''}
-        ${children[index].props.isSelected ? 'VirtualizedSelectSelectedOption' : ''}
-    `;
+      ${children[index].props.isFocused ? 'VirtualizedSelectFocusedOption' : ''}
+      ${children[index].props.isDisabled ? 'VirtualizedSelectDisabledOption' : ''}
+      ${children[index].props.isSelected ? 'VirtualizedSelectSelectedOption' : ''}`;
   }
 
   _optionRenderer({ style, index, data: options }) {
