@@ -1,5 +1,5 @@
 import React from 'react';
-import { VirtualizedSelect } from '../components/VirtualizedSelect';
+import { WindowSelect } from 'react-window-select';
 
 export class SimpleVirtualizedSelect extends React.PureComponent {
   constructor(props) {
@@ -22,7 +22,7 @@ export class SimpleVirtualizedSelect extends React.PureComponent {
     });
 
     return (
-      <VirtualizedSelect
+      <WindowSelect
         options={options}
         value={{ value: 'Item167', label: 'Item167' }}
         onChange={this._onChange}

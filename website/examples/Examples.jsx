@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { SimpleVirtualizedSelect } from './SimpleVirtualizedSelect';
-import { SelectWithCustomOptionRenderer } from './SelectWithCustomOptionRenderer';
+// import { SelectWithCustomOptionRenderer } from './SelectWithCustomOptionRenderer';
 
 export class Examples extends React.PureComponent {
   render() {
@@ -13,11 +13,12 @@ export class Examples extends React.PureComponent {
             <SimpleVirtualizedSelect />
           </div>
         </li>
-        <li className="select-option-renderer">
+        {/* <li className="select-option-renderer">
           <h3> Select with Custom Option Renderer </h3>
           <SelectWithCustomOptionRenderer />
-        </li>
+        </li> */}
       </ul>
     )
   }
+  
 }

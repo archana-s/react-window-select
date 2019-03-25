@@ -1,0 +1,39 @@
+{
+  "name": "windowselectexample",
+  "version": "1.0.0",
+  "description": "Examples on how to use WindowSelect",
+  "main": "index.js",
+  "author": "Archana Sankaranarayanan",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.4.2",
+    "express": "^4.16.4",
+    "html-webpack-plugin": "^3.2.0",
+    "react-select": "^2.4.2",
+    "react-window-select": "link:.."
+  },
+  "scripts": {
+    "deploy": "git push heroku master",
+    "build": "webpack -p --config webpack.prod.js",
+    "local:start": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "node server",
+    "heroku-postbuild": "npm run build"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "postcss-loader": "^3.0.0",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^1.2.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1",
+    "webpack-merge": "^4.2.1"
+  }
+}

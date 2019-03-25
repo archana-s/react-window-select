@@ -2,7 +2,7 @@ import React from 'react';
 import { FixedSizeList as List } from 'react-window';
 import Select from 'react-select';
 
-import './VirtualizedSelect.css';
+import './WindowSelect.css';
 
 class MenuList extends React.PureComponent {
   constructor(props) {
@@ -95,7 +95,7 @@ class MenuList extends React.PureComponent {
   }
 }
 
-class VirtualizedSelect extends React.Component {
+class WindowSelect extends React.Component {
   constructor(props) {
     super(props)
     const selectedValue = props.options ? 
@@ -163,10 +163,10 @@ class VirtualizedSelect extends React.Component {
   }
 }
 
-VirtualizedSelect.defaultProps = {
+WindowSelect.defaultProps = {
   maxHeight: 200,
   optionHeight: 35,
   async: false
 }
 
-export { VirtualizedSelect }
+export default WindowSelect
