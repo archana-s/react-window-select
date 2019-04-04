@@ -4,18 +4,20 @@ This uses the react-window's FixedSizeList and react-select 2.0. It currently su
 
 ## Usage
 ``` 
-  import { VirtualizedSelect } from 'react-window-select';
+  import { WindowSelect } from 'react-window-select';
 
-  <VirtualizedSelect
+  <WindowSelect
     options={options}
     value={{ value: 'Item167', label: 'Item167' }}
     onChange={this._onChange}
     isClearable={true}
+    styles={{ clearIndicator: ClearIndicatorStyles }}
   />
 ```
 
 ## Run locally  
 * yarn 
-* yarn local-start (Should start running on localhost:8080)
-* yarn test (to run puppeteer/jest)
+* yarn website:build (Should start running on localhost:8080)
+* yarn website:run
+* yarn test after yarn website:run (to run puppeteer/jest)
 
