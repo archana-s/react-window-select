@@ -15,11 +15,9 @@
     "react-window-select": "link:.."
   },
   "scripts": {
-    "deploy": "git push heroku master",
-    "build": "webpack -p --config webpack.prod.js",
+    "build": "yarn && webpack -p --config webpack.prod.js",
     "local:start": "webpack-dev-server --open --config webpack.dev.js",
-    "start": "node server",
-    "heroku-postbuild": "npm run build"
+    "start": "node server"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

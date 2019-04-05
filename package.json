@@ -25,18 +25,18 @@
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.1",
     "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-plugin-postcss": "^2.0.3",
-    "style-loader": "^0.23.1"
+    "rollup-plugin-postcss": "^2.0.3"
   },
   "scripts": {
     "test": "jest",
     "build:source": "rollup -c",
-    "build": "rm -rf dist && mkdir dist && yarn build:source",
-    "start": "rollup -c -w",
+    "build": "rm -rf dist && mkdir dist && yarn build:source && yarn website:build",
+    "dev:start": "rollup -c -w",
     "prepare": "yarn run build",
-    "website:build": "cd website && yarn build",
-    "website:deploy": "cd website && yarn deploy",
-    "website:run": "cd website && yarn start"
+    "website:build": "cd website && yarn && yarn build",
+    "website:run": "cd website && yarn start",
+    "start": "yarn website:run",
+    "heroku-postbuild": "yarn website:build"
   },
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
