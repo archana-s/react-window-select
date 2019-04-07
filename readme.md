@@ -15,9 +15,10 @@ This uses the react-window's FixedSizeList and react-select 2.0. It currently su
   />
 ```
 
+Here are a couple of [examples](https://cryptic-plains-61029.herokuapp.com/).
+
 ## Run locally  
 * `yarn `
-* `yarn website:build (Should start running on localhost:8080)`
+* `yarn website:build` (Should start running on localhost:8080)
 * `yarn website:run`
 * `yarn test` after `yarn website:run` (to run puppeteer/jest)
-
