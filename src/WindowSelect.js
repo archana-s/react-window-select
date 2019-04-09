@@ -8,6 +8,7 @@ class MenuList extends React.PureComponent {
   constructor(props) {
     super(props);
     this._optionRenderer = this._optionRenderer.bind(this);
+    this._customOptionRenderer = this._customOptionRenderer.bind(this);
     this._setListRef = this._setListRef.bind(this);
     this.focusedOptionIndex = -1;
   }
@@ -27,7 +28,7 @@ class MenuList extends React.PureComponent {
       options, 
       selectProps: { maxHeight, optionHeight, width, value: selectedValue, optionRenderer },
     } = this.props
-    optionRenderer = optionRenderer || this._optionRenderer
+    optionRenderer = optionRenderer ? this._customOptionRenderer : this._optionRenderer
 
     const childrenArray = Array.from(children);
     this.focusedOptionIndex = childrenArray.findIndex(child => child.props.isFocused); 
@@ -62,6 +63,34 @@ class MenuList extends React.PureComponent {
       ${children[index].props.isSelected ? 'VirtualizedSelectSelectedOption' : ''}`;
   }
 
+  _customOptionRenderer({ style, index, data: options }) {
+    // Populate with the defaults, and let the user edit them as they see fit. 
+    const { selectProps: { optionRenderer } } = this.props;
+    const { props: { isDisabled, isFocused, label, value, innerRef, innerProps } } = options[index];
+    const ref = innerRef;
+
+    const events = isDisabled ? {} :
+      {
+        onClick: () => this.props.selectOption(options[index].props),
+        onMouseOver: innerProps && innerProps.onMouseOver,
+      }
+    
+    const classNames = this._getClassNamesForOption(index, options);
+    
+    const optionData = {
+      isDisabled, 
+      isFocused,
+      events,
+      ref,
+      label,
+      value,
+      classNames,
+      style
+    }
+    return optionRenderer.call(null, optionData);
+  }
+
+
   _optionRenderer({ style, index, data: options }) {
     const { props: { isDisabled, isFocused, label, value, innerRef, innerProps } } = options[index];
     const ref = innerRef;
@@ -76,7 +105,7 @@ class MenuList extends React.PureComponent {
         style={style}
         className={this._getClassNamesForOption(index, options)}
         {...events}
-        ref={innerRef}
+        ref={ref}
         key={label}
       >
         {value}

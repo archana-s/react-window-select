@@ -6,6 +6,8 @@ export class SelectWithCustomOptionRenderer extends React.PureComponent {
     super(props)
     this._onChange = this._onChange.bind(this)
     this._optionRenderer = this._optionRenderer.bind(this)
+    this._onMouseOver = this._onMouseOver.bind(this)
+    this._onMouseOut = this._onMouseOut.bind(this)
   }
 
   render() {
@@ -27,24 +29,42 @@ export class SelectWithCustomOptionRenderer extends React.PureComponent {
     )
   }
 
-  _optionRenderer({ style, index, data: options }) {
-    const ref = options[index].innerRef;
-    const events = options[index].isDisabled ? {} :
-      {
-        onClick: () => options[index].selectOption(options[index]),
-        onMouseOver: options[index].onMouseOver
-      }
+  _onMouseOver(evt) {
+    evt.currentTarget.style.backgroundColor = 'lavender';
+  }
+
+  _onMouseOut(evt) {
+    evt.currentTarget.style.backgroundColor = 'transparent';
+  }
+
+  _optionRenderer(option) {
+    let {
+      label, 
+      value, 
+      ref, 
+      classNames,
+      style,
+      events,
+      isDisabled,
+      isFocused, 
+    } = option;
+
+    events = {
+      ...events,
+      onMouseOver: this._onMouseOver,
+      onMouseOut: this._onMouseOut
+    }
 
     return (
       <div
         style={style}
-        className={options[index].className}
+        className={classNames}
         {...events}
         ref={ref}
-        key={options[index].label}
+        key={label}
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ color: '#50A5A6' }}>{options[index].value}</div>
+          <div style={{ color: '#50A5A6' }}>{value}</div>
           <p style={{ width: '80%', wordBreak: 'break-all', color: '#034F50', margin: '4px 0'}}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 
           </p>
