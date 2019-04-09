@@ -36,24 +36,13 @@ class MenuList extends React.PureComponent {
       options.findIndex((option) => selectedValue.value === option.value) : 0;
     const initialScrollOffset = (selectedOptionIndex > -1 ? selectedOptionIndex : 0) * optionHeight;
 
-    options = childrenArray.map((child, index) => ({
-      label: child.props.label,
-      value: child.props.value, 
-      isDisabled: child.props.isDisabled,
-      isFocused: child.props.isFocused,
-      className: this._getClassNamesForOption(index, children),
-      selectOption: this.props.selectOption,
-      innerRef: child.props.innerRef,
-      onMouseOver: child.props.innerProps.onMouseOver
-    }))
-
     return (
       <List
         height={maxHeight}
         itemCount={options.length}
         itemSize={optionHeight}
         width={width}
-        itemData={options}
+        itemData={childrenArray}
         initialScrollOffset={initialScrollOffset}
         ref={this._setListRef}
       >
@@ -74,22 +63,23 @@ class MenuList extends React.PureComponent {
   }
 
   _optionRenderer({ style, index, data: options }) {
-    const ref = options[index].innerRef;
-    const events = options[index].isDisabled ? {} :
+    const { props: { isDisabled, isFocused, label, value, innerRef, innerProps } } = options[index];
+    const ref = innerRef;
+    const events = isDisabled ? {} :
       {
-        onClick: () => options[index].selectOption(options[index]),
-        onMouseOver: options[index].onMouseOver,
+        onClick: () => this.props.selectOption(options[index].props),
+        onMouseOver: innerProps && innerProps.onMouseOver,
       }
 
     return (
       <div
         style={style}
-        className={options[index].className}
+        className={this._getClassNamesForOption(index, options)}
         {...events}
-        ref={ref}
-        key={options[index].label}
+        ref={innerRef}
+        key={label}
       >
-        {options[index].value}
+        {value}
       </div> 
     )
   }
@@ -137,7 +127,7 @@ class WindowSelect extends React.Component {
     }
 
     if (selectedOption){
-      const { value, label } = selectedOption;
+      const { value } = selectedOption;
       selectedValue = this.props.options.find(item => item.value === value)
     }
 
