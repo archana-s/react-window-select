@@ -8,6 +8,7 @@ class MenuList extends React.PureComponent {
   constructor(props) {
     super(props);
     this._optionRenderer = this._optionRenderer.bind(this);
+    this._customOptionRenderer = this._customOptionRenderer.bind(this);
     this._setListRef = this._setListRef.bind(this);
     this.focusedOptionIndex = -1;
   }
@@ -27,7 +28,7 @@ class MenuList extends React.PureComponent {
       options, 
       selectProps: { maxHeight, optionHeight, width, value: selectedValue, optionRenderer },
     } = this.props
-    optionRenderer = optionRenderer || this._optionRenderer
+    optionRenderer = optionRenderer ? this._customOptionRenderer : this._optionRenderer
 
     const childrenArray = Array.from(children);
     this.focusedOptionIndex = childrenArray.findIndex(child => child.props.isFocused); 
@@ -36,24 +37,13 @@ class MenuList extends React.PureComponent {
       options.findIndex((option) => selectedValue.value === option.value) : 0;
     const initialScrollOffset = (selectedOptionIndex > -1 ? selectedOptionIndex : 0) * optionHeight;
 
-    options = childrenArray.map((child, index) => ({
-      label: child.props.label,
-      value: child.props.value, 
-      isDisabled: child.props.isDisabled,
-      isFocused: child.props.isFocused,
-      className: this._getClassNamesForOption(index, children),
-      selectOption: this.props.selectOption,
-      innerRef: child.props.innerRef,
-      onMouseOver: child.props.innerProps.onMouseOver
-    }))
-
     return (
       <List
         height={maxHeight}
         itemCount={options.length}
         itemSize={optionHeight}
         width={width}
-        itemData={options}
+        itemData={childrenArray}
         initialScrollOffset={initialScrollOffset}
         ref={this._setListRef}
       >
@@ -73,23 +63,52 @@ class MenuList extends React.PureComponent {
       ${children[index].props.isSelected ? 'VirtualizedSelectSelectedOption' : ''}`;
   }
 
-  _optionRenderer({ style, index, data: options }) {
-    const ref = options[index].innerRef;
-    const events = options[index].isDisabled ? {} :
+  _customOptionRenderer({ style, index, data: options }) {
+    // Populate with the defaults, and let the user edit them as they see fit. 
+    const { selectProps: { optionRenderer } } = this.props;
+    const { props: { isDisabled, isFocused, label, value, innerRef, innerProps } } = options[index];
+    const ref = innerRef;
+
+    const events = isDisabled ? {} :
       {
-        onClick: () => options[index].selectOption(options[index]),
-        onMouseOver: options[index].onMouseOver,
+        onClick: () => this.props.selectOption(options[index].props),
+        onMouseOver: innerProps && innerProps.onMouseOver,
+      }
+    
+    const classNames = this._getClassNamesForOption(index, options);
+    
+    const optionData = {
+      isDisabled, 
+      isFocused,
+      events,
+      ref,
+      label,
+      value,
+      classNames,
+      style
+    }
+    return optionRenderer.call(null, optionData);
+  }
+
+
+  _optionRenderer({ style, index, data: options }) {
+    const { props: { isDisabled, isFocused, label, value, innerRef, innerProps } } = options[index];
+    const ref = innerRef;
+    const events = isDisabled ? {} :
+      {
+        onClick: () => this.props.selectOption(options[index].props),
+        onMouseOver: innerProps && innerProps.onMouseOver,
       }
 
     return (
       <div
         style={style}
-        className={options[index].className}
+        className={this._getClassNamesForOption(index, options)}
         {...events}
         ref={ref}
-        key={options[index].label}
+        key={label}
       >
-        {options[index].value}
+        {value}
       </div> 
     )
   }
@@ -137,7 +156,7 @@ class WindowSelect extends React.Component {
     }
 
     if (selectedOption){
-      const { value, label } = selectedOption;
+      const { value } = selectedOption;
       selectedValue = this.props.options.find(item => item.value === value)
     }
 

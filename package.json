@@ -36,7 +36,8 @@
     "website:build": "cd website && yarn && yarn build",
     "website:run": "cd website && yarn start",
     "start": "yarn website:run",
-    "heroku-postbuild": "yarn website:build"
+    "heroku-postbuild": "yarn website:build",
+    "local:start": "cd website && yarn local:start" 
   },
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -44,9 +45,6 @@
     "dist",
     "src/*.js"
   ],
-  "engines": {
-    "node": "10.x"
-  },
   "author": "Archana Sankaranarayanan",
   "bugs": {
     "url": "https://github.com/archana-s/react-window-select/issues"
