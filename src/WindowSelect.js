@@ -26,13 +26,17 @@ class MenuList extends React.PureComponent {
   render() {
     let { children, 
       options, 
-      selectProps: { maxHeight, optionHeight, width, value: selectedValue, optionRenderer },
+      selectProps: { closeMenuOnSelect, maxHeight, optionHeight, width, value: selectedValue, optionRenderer, options: selectOptions },
     } = this.props
+    
+    // TODO: Apply closeMenuOnSelect manually.
+    // console.log(closeMenuOnSelect);
     optionRenderer = optionRenderer ? this._customOptionRenderer : this._optionRenderer
 
     const childrenArray = Array.from(children);
     this.focusedOptionIndex = childrenArray.findIndex(child => child.props.isFocused); 
 
+    // Costly Operation Alert! Possible fix.
     const selectedOptionIndex =  selectedValue ? 
       options.findIndex((option) => selectedValue.value === option.value) : 0;
     const initialScrollOffset = (selectedOptionIndex > -1 ? selectedOptionIndex : 0) * optionHeight;
@@ -40,7 +44,7 @@ class MenuList extends React.PureComponent {
     return (
       <List
         height={maxHeight}
-        itemCount={options.length}
+        itemCount={childrenArray.length}
         itemSize={optionHeight}
         width={width}
         itemData={childrenArray}
@@ -71,7 +75,7 @@ class MenuList extends React.PureComponent {
 
     const events = isDisabled ? {} :
       {
-        onClick: () => this.props.selectOption(options[index].props),
+        onClick: () => this.props.setValue({ ...options[index].props }),
         onMouseOver: innerProps && innerProps.onMouseOver,
       }
     
@@ -90,13 +94,12 @@ class MenuList extends React.PureComponent {
     return optionRenderer.call(null, optionData);
   }
 
-
   _optionRenderer({ style, index, data: options }) {
-    const { props: { isDisabled, isFocused, label, value, innerRef, innerProps } } = options[index];
+    const { props: { isDisabled, isFocused, label, value, innerRef, innerProps, setValue, selectProps } } = options[index];
     const ref = innerRef;
     const events = isDisabled ? {} :
       {
-        onClick: () => this.props.selectOption(options[index].props),
+        onClick: () => selectProps.onChange({ ...options[index].props }, 'select-option'),
         onMouseOver: innerProps && innerProps.onMouseOver,
       }
 
@@ -155,7 +158,7 @@ class WindowSelect extends React.Component {
       selectedValue = null;
     }
 
-    if (selectedOption){
+    if (selectedOption) {
       const { value } = selectedOption;
       selectedValue = this.props.options.find(item => item.value === value)
     }
