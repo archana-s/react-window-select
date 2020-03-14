@@ -912,9 +912,9 @@ acorn-dynamic-import@^4.0.0:
   integrity sha512-d3OEjQV4ROpoflsnUA8HozoIR504TFxNivYEUi6uwz0IYhBkTDXGuWlNdMtybRt3nqVx/L6XqMt0FxkXuWKZhw==
 
 acorn@^6.0.5:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
-  integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
+  version "6.4.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.4.1.tgz#531e58ba3f51b9dacb9a6646ca4debf5b14ca474"
+  integrity sha512-ZVA9k326Nwrj3Cj9jlh3wGFutC2ZornPNARZwsNYqQYgN0EsV2d53w5RN/co65Ohn4sUAUtb1rSUAOD6XN9idA==
 
 ajv-errors@^1.0.0:
   version "1.0.1"
@@ -4316,8 +4316,11 @@ react-transition-group@^2.2.1:
     react-lifecycles-compat "^3.0.4"
 
 "react-window-select@link:..":
-  version "0.0.0"
-  uid ""
+  version "0.0.1"
+  dependencies:
+    "@babel/runtime" "^7.4.2"
+    react-select "2.0"
+    react-window "^1.6.2"
 
 react-window@^1.6.2:
   version "1.7.1"
